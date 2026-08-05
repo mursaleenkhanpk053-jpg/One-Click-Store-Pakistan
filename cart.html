@@ -1,1 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Review your shopping cart and checkout securely at One-Click Store.">
+<meta name="theme-color" content="#0A1730">
+<title>Your Cart - One-Click Store</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
 
+<div class="topbar"><div class="container"><span>🚚 Free shipping on orders over $50</span></div></div>
+
+<header class="header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo"><span class="logo-mark">O</span><span class="logo-text">One-Click<span>Store</span></span></a>
+    <form class="search-form" id="searchForm">
+      <select class="search-select"><option>All Categories</option></select>
+      <input type="text" id="searchInput" class="search-input" placeholder="Search products, brands, and more...">
+      <button type="submit" class="search-btn">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2"/><path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </form>
+    <div class="header-actions">
+      <a href="#account" class="header-link"><span class="label-top">Hello, Sign in</span><span class="label-main">Account ▾</span></a>
+      <a href="cart.html" class="header-link"><span class="label-top">Your</span><span class="label-main">Cart 🛒<span class="cart-count" id="cartCount">0</span></span></a>
+    </div>
+    <button class="mobile-menu-btn" id="mobileMenuBtn"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main class="main-content">
+  <div class="container">
+    <nav class="breadcrumb"><a href="index.html">Home</a> / <span>Shopping Cart</span></nav>
+    <h1 style="margin-bottom:6px;">Shopping Cart</h1>
+    <p style="color:var(--text-400);font-size:14px;margin-bottom:20px;" id="itemCountLabel"></p>
+
+    <div class="cart-layout">
+      <div class="cart-items" id="cartItemsBox">
+        <div class="cart-header-row">
+          <span>Product</span><span>Details</span><span>Quantity</span><span>Total</span><span></span>
+        </div>
+        <div id="cartRows"></div>
+      </div>
+
+      <div class="summary-card">
+        <h3>Order Summary</h3>
+        <div class="summary-row"><span>Subtotal</span><span id="sumSubtotal">$0.00</span></div>
+        <div class="summary-row"><span>Shipping</span><span id="sumShipping">$0.00</span></div>
+        <div class="summary-row"><span>Tax (5%)</span><span id="sumTax">$0.00</span></div>
+        <div class="promo-row">
+          <input type="text" placeholder="Promo code" id="promoInput">
+          <button class="btn btn-outline btn-sm" onclick="applyPromo()">Apply</button>
+        </div>
+        <div class="summary-row total"><span>Total</span><span id="sumTotal">$0.00</span></div>
+        <button class="btn btn-primary btn-block" style="margin-top:14px;" onclick="checkout()">Proceed to Checkout →</button>
+        <a href="index.html" style="display:block;text-align:center;margin-top:14px;font-size:13px;color:var(--blue-600);">← Continue Shopping</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="footer-bottom"><div class="container footer-bottom-content">
+    <p>&copy; 2026 One-Click Store. All rights reserved.</p>
+  </div></div>
+</footer>
+
+<div id="toast" class="toast">✅ Cart updated</div>
+
+<script src="assets/js/products.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/chatbot.js"></script>
+<script>
+  let promoDiscount = 0;
+
+  function renderCart() {
+    const cart = getCart();
+    const box = document.getElementById('cartRows');
+    document.getElementById('itemCountLabel').textContent = `${cartTotalCount()} item(s) in your cart`;
+
+    if (cart.length === 0) {
+      box.innerHTML = `<div class="cart-empty"><div class="emoji">🛒</div><h3>Your cart is empty</h3><p style="margin:10px 0 20px;">Looks like you haven't added anything yet.</p><a href="index.html" class="btn btn-primary">Start Shopping</a></div>`;
+      document.querySelector('.cart-header-row').style.display = 'none';
+      updateSummary(0);
+      return;
+    }
+    document.querySelector('.cart-header-row').style.display = 'grid';
+
+    let subtotal = 0;
+    box.innerHTML = cart.map(item => {
+      const p = getProductById(item.id);
+      if (!p) return '';
+      const lineTotal = p.price * item.qty;
+      subtotal += lineTotal;
+      return `
+      <div class="cart-row">
+        <img src="${p.image}" alt="${p.name}">
+        <div>
+          <div class="cart-item-name"><a href="product.html?id=${p.id}">${p.name}</a></div>
+          <div class="cart-item-meta">${item.option ? `Option: ${item.option} · ` : ''}$${p.price.toFixed(2)} each</div>
+        </div>
+        <div class="qty-control">
+          <button onclick="changeCartQty('${item.id}', ${item.qty - 1}, ${item.option ? `'${item.option}'` : null})">−</button>
+          <input type="text" value="${item.qty}" readonly>
+          <button onclick="changeCartQty('${item.id}', ${item.qty + 1}, ${item.option ? `'${item.option}'` : null})">+</button>
+        </div>
+        <span class="price">$${lineTotal.toFixed(2)}</span>
+        <button class="cart-remove" onclick="removeCartItem('${item.id}', ${item.option ? `'${item.option}'` : null})" aria-label="Remove">✕</button>
+      </div>`;
+    }).join('');
+
+    updateSummary(subtotal);
+  }
+
+  function updateSummary(subtotal) {
+    const shipping = subtotal === 0 ? 0 : (subtotal >= 50 ? 0 : 5.99);
+    const discount = subtotal * promoDiscount;
+    const tax = (subtotal - discount) * 0.05;
+    const total = subtotal - discount + shipping + tax;
+    document.getElementById('sumSubtotal').textContent = `$${subtotal.toFixed(2)}`;
+    document.getElementById('sumShipping').textContent = shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`;
+    document.getElementById('sumTax').textContent = `$${tax.toFixed(2)}`;
+    document.getElementById('sumTotal').textContent = `$${total.toFixed(2)}`;
+  }
+
+  function changeCartQty(id, qty, option) {
+    if (qty < 1) { removeCartItem(id, option); return; }
+    updateCartQty(id, qty, option);
+    renderCart();
+  }
+  function removeCartItem(id, option) {
+    removeFromCart(id, option);
+    renderCart();
+    showToast('🗑️ Item removed');
+  }
+  function applyPromo() {
+    const code = document.getElementById('promoInput').value.trim().toUpperCase();
+    if (code === 'SAVE10') {
+      promoDiscount = 0.10;
+      showToast('🎉 Promo applied: 10% off');
+    } else {
+      promoDiscount = 0;
+      showToast('❌ Invalid promo code');
+    }
+    renderCart();
+  }
+  function checkout() {
+    if (getCart().length === 0) { showToast('Your cart is empty'); return; }
+    showToast('✅ Order placed! This is a demo checkout.');
+  }
+
+  renderCart();
+</script>
+</body>
+</html>
