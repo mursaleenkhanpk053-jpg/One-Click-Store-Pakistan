@@ -1,1 +1,298 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="One-Click Store - Shop electronics, fashion, home essentials and more with fast checkout, secure payments, and unbeatable daily deals.">
+<meta name="keywords" content="ecommerce, online shopping, electronics, fashion, deals, one-click store">
+<meta name="author" content="One-Click Store">
+<meta name="theme-color" content="#0A1730">
+<title>One-Click Store - Shop Smarter, Live Better</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%232F5CF6%22/><text x=%2216%22 y=%2222%22 font-size=%2216%22 fill=%22white%22 text-anchor=%22middle%22 font-family=%22sans-serif%22>O</text></svg>">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+ 
+<!-- TOP UTILITY BAR -->
+<div class="topbar">
+  <div class="container">
+    <span>🚚 Free shipping on orders over $50</span>
+    <div class="topbar-links">
+      <a href="admin.html">Sell on One-Click</a>
+      <a href="#help">Help Center</a>
+      <a href="#track-order">Track Order</a>
+    </div>
+  </div>
+</div>
+ 
+<!-- HEADER -->
+<header class="header" id="header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-mark">O</span>
+      <span class="logo-text">One-Click<span>Store</span></span>
+    </a>
+ 
+    <form class="search-form" id="searchForm">
+      <select class="search-select" aria-label="Category">
+        <option>All Categories</option>
+        <option>Electronics</option>
+        <option>Fashion</option>
+        <option>Home & Garden</option>
+        <option>Sports & Outdoors</option>
+        <option>Books & Media</option>
+      </select>
+      <input type="text" id="searchInput" class="search-input" placeholder="Search products, brands, and more..." aria-label="Search" autocomplete="off">
+      <button type="submit" class="search-btn" aria-label="Search Button">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2"/><path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </form>
+ 
+    <div class="header-actions">
+      <a href="admin.html" class="header-link">
+        <span class="label-top">Admin</span>
+        <span class="label-main">Dashboard</span>
+      </a>
+      <a href="#account" class="header-link">
+        <span class="label-top">Hello, Sign in</span>
+        <span class="label-main">Account ▾</span>
+      </a>
+      <a href="#orders" class="header-link">
+        <span class="label-top">Returns</span>
+        <span class="label-main">& Orders</span>
+      </a>
+      <a href="cart.html" class="header-link">
+        <span class="label-top">Your</span>
+        <span class="label-main">Cart 🛒<span class="cart-count" id="cartCount">0</span></span>
+      </a>
+    </div>
+ 
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Mobile Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+ 
+  <nav class="navbar" id="navbar">
+    <div class="container nav-container">
+      <button class="categories-btn" id="categoriesBtn">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor"><path d="M2 4H18V6H2V4ZM2 9H18V11H2V9ZM2 14H18V16H2V14Z"/></svg>
+        All Categories
+      </button>
+      <ul class="nav-menu">
+        <li><a href="#electronics" class="nav-link">Electronics</a></li>
+        <li><a href="#fashion" class="nav-link">Fashion</a></li>
+        <li><a href="#home" class="nav-link">Home & Garden</a></li>
+        <li><a href="#sports" class="nav-link">Sports & Outdoors</a></li>
+        <li><a href="#books" class="nav-link">Books & Media</a></li>
+        <li><a href="#deals" class="nav-link deals-link">🔥 Today's Deals</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+ 
+<main class="main-content">
+ 
+  <!-- HERO SLIDER -->
+  <section class="hero-slider" id="heroSlider">
+    <div class="slider-container">
+      <div class="slider-wrapper">
+        <div class="slide active">
+          <div class="slide-bg bg-1"></div>
+          <div class="slide-content">
+            <div class="slide-eyebrow">Summer Collection</div>
+            <h2>Up to 50% off your favorite gear</h2>
+            <p>Fresh arrivals across electronics, fashion, and home — refreshed weekly.</p>
+            <a href="#featured" class="btn btn-amber">Shop Now →</a>
+          </div>
+        </div>
+        <div class="slide">
+          <div class="slide-bg bg-2"></div>
+          <div class="slide-content">
+            <div class="slide-eyebrow">Electronics Sale</div>
+            <h2>Latest gadgets, unbeatable prices</h2>
+            <p>From smartwatches to 4K TVs — everything your setup needs.</p>
+            <a href="#featured" class="btn btn-amber">Explore →</a>
+          </div>
+        </div>
+        <div class="slide">
+          <div class="slide-bg bg-3"></div>
+          <div class="slide-content">
+            <div class="slide-eyebrow">Home Essentials</div>
+            <h2>Transform your space today</h2>
+            <p>Premium home & kitchen products with free shipping over $50.</p>
+            <a href="#featured" class="btn btn-amber">Browse →</a>
+          </div>
+        </div>
+      </div>
+      <button class="slider-btn prev" id="prevBtn" aria-label="Previous Slide">‹</button>
+      <button class="slider-btn next" id="nextBtn" aria-label="Next Slide">›</button>
+      <div class="slider-dots">
+        <button class="dot active" data-slide="0"></button>
+        <button class="dot" data-slide="1"></button>
+        <button class="dot" data-slide="2"></button>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- TRUST STRIP -->
+  <div class="trust-strip">
+    <div class="container trust-grid">
+      <div class="trust-item"><span class="trust-icon">🚚</span><div><strong>Free Delivery</strong><span>On orders over $50</span></div></div>
+      <div class="trust-item"><span class="trust-icon">↩️</span><div><strong>Easy Returns</strong><span>30-day return policy</span></div></div>
+      <div class="trust-item"><span class="trust-icon">🔒</span><div><strong>Secure Payment</strong><span>100% protected checkout</span></div></div>
+      <div class="trust-item"><span class="trust-icon">🎧</span><div><strong>24/7 Support</strong><span>Dedicated help center</span></div></div>
+    </div>
+  </div>
+ 
+  <!-- CATEGORIES -->
+  <section class="section" id="categoriesSection">
+    <div class="container">
+      <div class="section-header">
+        <div><h2 class="section-title">Shop by Category</h2><p class="section-sub">Find exactly what you're looking for</p></div>
+      </div>
+      <div class="categories-grid">
+        <a class="category-card" href="#electronics"><div class="category-icon">📱</div><h3>Electronics</h3></a>
+        <a class="category-card" href="#fashion"><div class="category-icon">👕</div><h3>Fashion</h3></a>
+        <a class="category-card" href="#home"><div class="category-icon">🏡</div><h3>Home & Garden</h3></a>
+        <a class="category-card" href="#sports"><div class="category-icon">🏋️</div><h3>Sports & Outdoors</h3></a>
+        <a class="category-card" href="#books"><div class="category-icon">📚</div><h3>Books & Media</h3></a>
+        <a class="category-card" href="#toys"><div class="category-icon">🧸</div><h3>Toys & Games</h3></a>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- TODAY'S DEALS -->
+  <section class="section" id="todaysDeals">
+    <div class="container">
+      <div class="section-header">
+        <div><h2 class="section-title">🔥 Today's Deals</h2><p class="section-sub">Limited-time offers, refreshed daily</p></div>
+        <a href="#all-deals" class="view-all-link">View All Deals →</a>
+      </div>
+      <div class="deals-container" id="dealsContainer"></div>
+    </div>
+  </section>
+ 
+  <!-- FEATURED PRODUCTS -->
+  <section class="section" id="featured">
+    <div class="container">
+      <div class="section-header">
+        <div><h2 class="section-title">Featured Products</h2><p class="section-sub">Hand-picked items just for you</p></div>
+        <a href="#all-featured" class="view-all-link">View All Products →</a>
+      </div>
+      <div class="products-grid" id="productsGrid"></div>
+    </div>
+  </section>
+ 
+  <!-- BEST SELLERS -->
+  <section class="section" id="bestSellers">
+    <div class="container">
+      <div class="section-header">
+        <div><h2 class="section-title">Best Sellers</h2><p class="section-sub">Loved by thousands of customers</p></div>
+        <a href="#all-bestsellers" class="view-all-link">View All Best Sellers →</a>
+      </div>
+      <div class="best-sellers-container" id="bestSellersContainer"></div>
+    </div>
+  </section>
+ 
+  <!-- NEWSLETTER -->
+  <section class="newsletter-section">
+    <div class="container newsletter-container">
+      <div class="newsletter-content">
+        <h2>Subscribe & Save 10%</h2>
+        <p>Get the latest deals, exclusive offers, and shopping tips delivered to your inbox.</p>
+        <form class="newsletter-form" id="newsletterForm">
+          <div class="newsletter-input-wrapper">
+            <input type="email" class="newsletter-input" placeholder="Enter your email address" required aria-label="Email Address">
+            <button type="submit" class="newsletter-btn" aria-label="Subscribe">Subscribe</button>
+          </div>
+          <p class="newsletter-privacy">We respect your privacy. Unsubscribe at any time.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+ 
+</main>
+ 
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container footer-container">
+    <div class="footer-column">
+      <h4 class="footer-title">About One-Click Store</h4>
+      <ul class="footer-links"><li><a href="#about-us">About Us</a></li><li><a href="#careers">Careers</a></li><li><a href="#press-release">Press Releases</a></li><li><a href="#blog">Blog</a></li><li><a href="#sustainability">Sustainability</a></li></ul>
+    </div>
+    <div class="footer-column">
+      <h4 class="footer-title">Customer Service</h4>
+      <ul class="footer-links"><li><a href="#contact-us">Contact Us</a></li><li><a href="#faq">FAQ</a></li><li><a href="#shipping-info">Shipping Information</a></li><li><a href="#returns">Returns & Exchanges</a></li><li><a href="#track-order">Track Your Order</a></li></ul>
+    </div>
+    <div class="footer-column">
+      <h4 class="footer-title">Policies</h4>
+      <ul class="footer-links"><li><a href="#privacy-policy">Privacy Policy</a></li><li><a href="#terms-conditions">Terms & Conditions</a></li><li><a href="#shipping-policy">Shipping Policy</a></li><li><a href="#return-policy">Return Policy</a></li><li><a href="#cookie-policy">Cookie Policy</a></li></ul>
+    </div>
+    <div class="footer-column">
+      <h4 class="footer-title">Connect With Us</h4>
+      <ul class="footer-links"><li><a href="#facebook">Facebook</a></li><li><a href="#twitter">Twitter</a></li><li><a href="#instagram">Instagram</a></li><li><a href="#linkedin">LinkedIn</a></li><li><a href="#youtube">YouTube</a></li></ul>
+    </div>
+    <div class="footer-column">
+      <h4 class="footer-title">Payment & Security</h4>
+      <div class="payment-methods">
+        <svg viewBox="0 0 48 32" width="32" height="21"><rect width="48" height="32" rx="4" fill="white" stroke="#2a3766"/><text x="24" y="20" text-anchor="middle" font-size="10" font-weight="bold" fill="#2F5CF6">VISA</text></svg>
+        <svg viewBox="0 0 48 32" width="32" height="21"><rect width="48" height="32" rx="4" fill="white" stroke="#2a3766"/><circle cx="19" cy="16" r="8" fill="#EB001B"/><circle cx="29" cy="16" r="8" fill="#F79E1B" fill-opacity=".8"/></svg>
+        <svg viewBox="0 0 48 32" width="32" height="21"><rect width="48" height="32" rx="4" fill="white" stroke="#2a3766"/><text x="24" y="19" text-anchor="middle" font-size="7" font-weight="bold" fill="#003087">PayPal</text></svg>
+      </div>
+      <p class="ssl-info">🔒 SSL Secured checkout</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container footer-bottom-content">
+      <p>&copy; 2026 One-Click Store. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="#sitemap">Sitemap</a><span class="separator">•</span>
+        <a href="#accessibility">Accessibility</a><span class="separator">•</span>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+ 
+<div id="toast" class="toast">✅ Product added to cart</div>
+ 
+<!-- Quick View Modal -->
+<div class="quick-view-modal" id="quickViewModal">
+  <div class="quick-view-content">
+    <span class="close-modal" id="closeModal">&times;</span>
+    <img id="modalImage" src="" alt="Product">
+    <div>
+      <h2 id="modalTitle"></h2>
+      <h3 id="modalPrice"></h3>
+      <button class="add-to-cart-btn btn-block" id="modalCartBtn" style="margin-top:16px;">Add to Cart</button>
+    </div>
+  </div>
+</div>
+ 
+<script src="assets/js/products.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/chatbot.js"></script>
+<script>
+  // Render dynamic product sections from the shared catalog
+  const allProducts = getProducts();
+  document.getElementById('dealsContainer').innerHTML = allProducts
+    .filter(p => p.originalPrice)
+    .slice(0, 4)
+    .map(dealCardHTML).join('');
+  document.getElementById('productsGrid').innerHTML = allProducts
+    .slice(0, 8)
+    .map(productCardHTML).join('');
+  document.getElementById('bestSellersContainer').innerHTML = [...allProducts]
+    .sort((a, b) => b.reviews - a.reviews)
+    .slice(0, 4)
+    .map((p, i) => bestsellerCardHTML(p, i + 1)).join('');
+ 
+  document.getElementById('newsletterForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    showToast('📧 Subscribed! Check your inbox for 10% off.');
+    e.target.reset();
+  });
+</script>
+</body>
+</html>
+ 
