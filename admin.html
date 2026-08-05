@@ -1,1 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Admin dashboard for One-Click Store - manage products, orders and sales.">
+<meta name="theme-color" content="#0A1730">
+<title>Admin Dashboard - One-Click Store</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="admin-body">
 
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <span class="logo-mark" style="margin-bottom:16px;">O</span>
+    <h2>Admin Login</h2>
+    <p>Sign in to manage your store</p>
+    <form id="loginForm">
+      <div class="form-group"><label>Email</label><input type="email" id="loginEmail" value="admin@oneclickstore.com" required></div>
+      <div class="form-group"><label>Password</label><input type="password" id="loginPassword" value="admin123" required></div>
+      <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+    </form>
+    <div class="login-hint">Demo credentials are pre-filled. This is a front-end demo — data is stored in your browser only.</div>
+  </div>
+</div>
+
+<!-- ADMIN SHELL -->
+<div class="admin-shell" id="adminShell" style="display:none;">
+  <aside class="admin-sidebar">
+    <div class="admin-logo"><span class="logo-mark">O</span><span class="logo-text" style="color:#fff;">One-Click<span style="color:var(--amber-500);">Admin</span></span></div>
+    <nav class="admin-nav">
+      <a href="#dashboard" class="nav-item active" data-view="dashboard"><span class="icon">📊</span> Dashboard</a>
+      <a href="#products" class="nav-item" data-view="products"><span class="icon">📦</span> Products</a>
+      <a href="#orders" class="nav-item" data-view="orders"><span class="icon">🧾</span> Orders</a>
+      <a href="#customers" class="nav-item" data-view="customers"><span class="icon">👥</span> Customers</a>
+      <a href="index.html" class="nav-item"><span class="icon">🏬</span> View Store</a>
+      <a href="#logout" class="nav-item" id="logoutBtn"><span class="icon">🚪</span> Logout</a>
+    </nav>
+  </aside>
+
+  <main class="admin-main">
+    <!-- DASHBOARD VIEW -->
+    <section id="view-dashboard" class="admin-view">
+      <div class="admin-topbar">
+        <div><h1>Dashboard Overview</h1><p>Welcome back — here's what's happening with your store today.</p></div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:var(--blue-100);color:var(--blue-600);">💰</div>
+          <div class="stat-value" id="statRevenue">$0</div>
+          <div class="stat-label">Total Revenue</div>
+          <div class="stat-delta up">▲ 12.4% vs last month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#DEF7EA;color:var(--green-500);">🧾</div>
+          <div class="stat-value" id="statOrders">0</div>
+          <div class="stat-label">Total Orders</div>
+          <div class="stat-delta up">▲ 8.1% vs last month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#FEF3D9;color:var(--amber-600);">📦</div>
+          <div class="stat-value" id="statProducts">0</div>
+          <div class="stat-label">Active Products</div>
+          <div class="stat-delta up">▲ 3 new this week</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#FDE8E8;color:var(--red-500);">👥</div>
+          <div class="stat-value" id="statCustomers">1,204</div>
+          <div class="stat-label">Total Customers</div>
+          <div class="stat-delta down">▼ 1.2% vs last month</div>
+        </div>
+      </div>
+
+      <div class="admin-panel">
+        <div class="admin-panel-head"><h2>Sales — Last 7 Days</h2><span class="badge-pill">Live demo data</span></div>
+        <div class="chart-bars" id="chartBars"></div>
+        <div class="chart-labels" id="chartLabels"></div>
+      </div>
+
+      <div class="admin-panel">
+        <div class="admin-panel-head"><h2>Recent Orders</h2><a href="#orders" class="view-all-link" onclick="switchView('orders')">View All →</a></div>
+        <table class="admin-table">
+          <thead><tr><th>Order ID</th><th>Customer</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead>
+          <tbody id="recentOrdersBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- PRODUCTS VIEW -->
+    <section id="view-products" class="admin-view" style="display:none;">
+      <div class="admin-topbar">
+        <div><h1>Products</h1><p>Manage your product catalog</p></div>
+        <button class="btn btn-primary" onclick="openProductModal()">+ Add Product</button>
+      </div>
+      <div class="admin-panel">
+        <table class="admin-table">
+          <thead><tr><th>Image</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="productsTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ORDERS VIEW -->
+    <section id="view-orders" class="admin-view" style="display:none;">
+      <div class="admin-topbar"><div><h1>Orders</h1><p>Track and manage customer orders</p></div></div>
+      <div class="admin-panel">
+        <table class="admin-table">
+          <thead><tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Date</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="ordersTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- CUSTOMERS VIEW -->
+    <section id="view-customers" class="admin-view" style="display:none;">
+      <div class="admin-topbar"><div><h1>Customers</h1><p>Your customer base at a glance</p></div></div>
+      <div class="admin-panel">
+        <table class="admin-table">
+          <thead><tr><th>Name</th><th>Email</th><th>Orders</th><th>Total Spent</th><th>Joined</th></tr></thead>
+          <tbody id="customersTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- PRODUCT ADD/EDIT MODAL -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal-box" style="max-width:560px;">
+    <span class="close-modal" onclick="closeProductModal()">&times;</span>
+    <h2 id="productModalTitle" style="margin-bottom:18px;">Add Product</h2>
+    <form id="productForm">
+      <input type="hidden" id="pf-id">
+      <div class="admin-form-grid">
+        <div class="form-group"><label>Product Name</label><input type="text" id="pf-name" required></div>
+        <div class="form-group"><label>Category</label>
+          <select id="pf-category">
+            <option>Electronics</option><option>Fashion</option><option>Home & Garden</option>
+            <option>Sports & Outdoors</option><option>Books & Media</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Price ($)</label><input type="number" step="0.01" id="pf-price" required></div>
+        <div class="form-group"><label>Original Price ($)</label><input type="number" step="0.01" id="pf-original"></div>
+        <div class="form-group"><label>Stock Quantity</label><input type="number" id="pf-stock" required></div>
+        <div class="form-group"><label>Image URL</label><input type="text" id="pf-image" placeholder="https://..."></div>
+      </div>
+      <div class="form-group"><label>Description</label><textarea id="pf-desc"></textarea></div>
+      <button type="submit" class="btn btn-primary btn-block">Save Product</button>
+    </form>
+  </div>
+</div>
+
+<div id="toast" class="toast">Saved</div>
+
+<script src="assets/js/products.js"></script>
+<script>
+  /* ---------- LOGIN ---------- */
+  document.getElementById('loginForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    sessionStorage.setItem('ocs_admin_logged_in', 'true');
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminShell').style.display = 'grid';
+    initDashboard();
+  });
+  document.getElementById('logoutBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    sessionStorage.removeItem('ocs_admin_logged_in');
+    location.reload();
+  });
+  if (sessionStorage.getItem('ocs_admin_logged_in') === 'true') {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminShell').style.display = 'grid';
+  }
+
+  /* ---------- NAV SWITCHING ---------- */
+  function switchView(view) {
+    document.querySelectorAll('.admin-view').forEach(v => v.style.display = 'none');
+    document.getElementById(`view-${view}`).style.display = 'block';
+    document.querySelectorAll('.admin-nav .nav-item').forEach(a => a.classList.remove('active'));
+    document.querySelector(`.admin-nav a[data-view="${view}"]`)?.classList.add('active');
+  }
+  document.querySelectorAll('.admin-nav .nav-item[data-view]').forEach(a => {
+    a.addEventListener('click', (e) => { e.preventDefault(); switchView(a.dataset.view); });
+  });
+
+  /* ---------- MOCK ORDERS / CUSTOMERS ---------- */
+  const MOCK_ORDERS = [
+    { id: '#OCS-10234', customer: 'Ahmed Raza', items: 3, date: 'Aug 4, 2026', amount: 249.99, status: 'paid' },
+    { id: '#OCS-10233', customer: 'Sara Khan', items: 1, date: 'Aug 4, 2026', amount: 79.99, status: 'pending' },
+    { id: '#OCS-10232', customer: 'Bilal Ahmed', items: 2, date: 'Aug 3, 2026', amount: 154.98, status: 'paid' },
+    { id: '#OCS-10231', customer: 'Fatima Noor', items: 5, date: 'Aug 3, 2026', amount: 412.50, status: 'paid' },
+    { id: '#OCS-10230', customer: 'Usman Tariq', items: 1, date: 'Aug 2, 2026', amount: 34.99, status: 'cancelled' },
+    { id: '#OCS-10229', customer: 'Hina Malik', items: 4, date: 'Aug 2, 2026', amount: 289.96, status: 'paid' }
+  ];
+  const MOCK_CUSTOMERS = [
+    { name: 'Ahmed Raza', email: 'ahmed.raza@example.com', orders: 12, spent: 1240.50, joined: 'Jan 2025' },
+    { name: 'Sara Khan', email: 'sara.khan@example.com', orders: 5, spent: 389.99, joined: 'Mar 2025' },
+    { name: 'Bilal Ahmed', email: 'bilal.a@example.com', orders: 8, spent: 720.10, joined: 'Nov 2024' },
+    { name: 'Fatima Noor', email: 'fatima.noor@example.com', orders: 21, spent: 2104.75, joined: 'Jun 2024' },
+    { name: 'Usman Tariq', email: 'usman.t@example.com', orders: 2, spent: 89.98, joined: 'Jul 2025' }
+  ];
+
+  function statusPill(status) {
+    return `<span class="status-pill ${status}">${status.charAt(0).toUpperCase() + status.slice(1)}</span>`;
+  }
+
+  function initDashboard() {
+    const products = getProducts();
+    document.getElementById('statProducts').textContent = products.length;
+    const totalRevenue = MOCK_ORDERS.reduce((s, o) => s + o.amount, 0);
+    document.getElementById('statRevenue').textContent = `$${totalRevenue.toFixed(2)}`;
+    document.getElementById('statOrders').textContent = MOCK_ORDERS.length;
+
+    // Chart
+    const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const values = [420, 680, 540, 790, 610, 980, 730];
+    const max = Math.max(...values);
+    document.getElementById('chartBars').innerHTML = values.map(v =>
+      `<div class="chart-bar" style="height:${(v / max) * 100}%"><span>$${v}</span></div>`).join('');
+    document.getElementById('chartLabels').innerHTML = days.map(d => `<span>${d}</span>`).join('');
+
+    // Recent orders (dashboard preview)
+    document.getElementById('recentOrdersBody').innerHTML = MOCK_ORDERS.slice(0, 5).map(o => `
+      <tr><td>${o.id}</td><td>${o.customer}</td><td>${o.date}</td><td class="price">$${o.amount.toFixed(2)}</td><td>${statusPill(o.status)}</td></tr>
+    `).join('');
+
+    // Full orders table
+    document.getElementById('ordersTableBody').innerHTML = MOCK_ORDERS.map(o => `
+      <tr>
+        <td>${o.id}</td><td>${o.customer}</td><td>${o.items}</td><td>${o.date}</td><td class="price">$${o.amount.toFixed(2)}</td><td>${statusPill(o.status)}</td>
+        <td class="row-actions"><button title="View">👁️</button><button title="Update status">✏️</button></td>
+      </tr>
+    `).join('');
+
+    // Customers table
+    document.getElementById('customersTableBody').innerHTML = MOCK_CUSTOMERS.map(c => `
+      <tr><td>${c.name}</td><td>${c.email}</td><td>${c.orders}</td><td class="price">$${c.spent.toFixed(2)}</td><td>${c.joined}</td></tr>
+    `).join('');
+
+    renderProductsTable();
+  }
+
+  /* ---------- PRODUCTS CRUD ---------- */
+  function renderProductsTable() {
+    const products = getProducts();
+    document.getElementById('productsTableBody').innerHTML = products.map(p => `
+      <tr>
+        <td><img src="${p.image}" alt="${p.name}"></td>
+        <td>${p.name}</td>
+        <td>${p.category}</td>
+        <td class="price">$${p.price.toFixed(2)}</td>
+        <td>${p.stock}</td>
+        <td>${statusPill(p.stock > 0 ? 'instock' : 'outofstock')}</td>
+        <td class="row-actions">
+          <button title="Edit" onclick="openProductModal('${p.id}')">✏️</button>
+          <button title="Delete" class="danger" onclick="deleteProduct('${p.id}')">🗑️</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function openProductModal(id) {
+    const modal = document.getElementById('productModal');
+    const form = document.getElementById('productForm');
+    form.reset();
+    if (id) {
+      const p = getProductById(id);
+      document.getElementById('productModalTitle').textContent = 'Edit Product';
+      document.getElementById('pf-id').value = p.id;
+      document.getElementById('pf-name').value = p.name;
+      document.getElementById('pf-category').value = p.category;
+      document.getElementById('pf-price').value = p.price;
+      document.getElementById('pf-original').value = p.originalPrice || '';
+      document.getElementById('pf-stock').value = p.stock;
+      document.getElementById('pf-image').value = p.image;
+      document.getElementById('pf-desc').value = p.description;
+    } else {
+      document.getElementById('productModalTitle').textContent = 'Add Product';
+      document.getElementById('pf-id').value = '';
+    }
+    modal.classList.add('open');
+  }
+  function closeProductModal() { document.getElementById('productModal').classList.remove('open'); }
+
+  document.getElementById('productForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const products = getProducts();
+    const id = document.getElementById('pf-id').value;
+    const image = document.getElementById('pf-image').value || 'https://picsum.photos/seed/newproduct/700/700';
+    const data = {
+      name: document.getElementById('pf-name').value,
+      category: document.getElementById('pf-category').value,
+      price: parseFloat(document.getElementById('pf-price').value),
+      originalPrice: parseFloat(document.getElementById('pf-original').value) || null,
+      stock: parseInt(document.getElementById('pf-stock').value),
+      image, gallery: [image],
+      description: document.getElementById('pf-desc').value || 'No description provided.',
+      specs: {}, options: [], rating: 5, reviews: 0,
+      sku: 'OCS-' + Math.random().toString(36).slice(2, 8).toUpperCase()
+    };
+    if (id) {
+      const idx = products.findIndex(p => p.id === id);
+      products[idx] = { ...products[idx], ...data };
+      showToast('✅ Product updated');
+    } else {
+      data.id = 'p' + Date.now();
+      products.push(data);
+      showToast('✅ Product added');
+    }
+    saveProducts(products);
+    renderProductsTable();
+    closeProductModal();
+    initDashboard();
+  });
+
+  function deleteProduct(id) {
+    if (!confirm('Delete this product? This cannot be undone.')) return;
+    saveProducts(getProducts().filter(p => p.id !== id));
+    renderProductsTable();
+    initDashboard();
+    showToast('🗑️ Product deleted');
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2200);
+  }
+
+  if (sessionStorage.getItem('ocs_admin_logged_in') === 'true') initDashboard();
+</script>
+</body>
+</html>
